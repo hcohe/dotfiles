@@ -1,0 +1,87 @@
+unbind r
+bind r source-file ~/.tmux.conf
+
+set -g prefix C-s
+set -g mouse on
+setw -g mode-keys vi
+set -g base-index 1
+setw -g pane-base-index 1
+
+set -g detach-on-destroy off     # don't exit from tmux when closing a session
+set -g escape-time 0             # zero-out escape time delay
+set -g history-limit 1000000     # increase history size (from 2,000)
+set -g renumber-windows on       # renumber all windows when any window is closed
+set -g status-position top
+
+#bind-key -T root C-] next-window
+#bind-key -T root C-[ previous-window
+#bind-key -T root C-a last
+bind C-l send-keys 'C-l'
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'wfxr/tmux-fzf-url'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# open tmux-fzf-url in a tmux v3.2+ popup
+set -g @fzf-url-fzf-options '-w 50% -h 50% \
+  --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+  --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+  --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+  --color=selected-bg:#45475a \
+  --multi'
+
+run '~/.tmux/plugins/tpm/tpm'
+
+
+set -g @catppuccin_window_right_separator "█ "
+set -g @catppuccin_window_left_separator "█"
+set -g @catppuccin_window_middle_separator "█"
+set -g @catppuccin_window_number_position "right"
+set -g @catppuccin_window_default_fill "number"
+set -g @catppuccin_window_default_text "#W"
+set -g @catppuccin_window_current_fill "number"
+set -g @catppuccin_window_current_text "#W"
+set -g @catppuccin_status_modules_right "session"
+set -g @catppuccin_status_left_separator  "█"
+set -g @catppuccin_status_right_separator "█"
+set -g @catppuccin_status_fill "icon"
+set -g @catppuccin_status_connect_separator "no"
+set -g @catppuccin_pane_active_border_style "fg=#{thm_gray}" # Use a value compatible with the standard tmux 'pane-border-active-style'
+set -g @catppuccin_directory_text "#{pane_current_path}" 
+set -g @catppuccin_window_current_background "#{thm_gray}"
+# Other examples:
+# set -g @plugin 'github_username/plugin_name'
+# set -g @plugin 'github_username/plugin_name#branch'
+# set -g @plugin 'git@github.com:user/plugin'
+# set -g @plugin 'git@bitbucket.com:user/plugin'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'  
+
+set -g default-terminal "xterm-256color"
+
+# make colors inside tmux look the same as outside of tmux
+# see https://github.com/tmux/tmux/issues/696
+# see https://stackoverflow.com/a/41786092
+set-option -ga terminal-overrides ",xterm-256color:Tc"
+
+# Emulate space above status bar
+# set -Fg 'status-format[1]' '#{status-format[0]}'
+# set -g 'status-format[0]' ''
+# set -g status 2
+
+
+# if -F '#{!=:#{status},2}' " \
+#     set -Fg 'status-format[1]' '#{status-format[0]}' ;\
+#     set -g 'status-format[0]' '' ;\
+#     set -g status 2 \
+#     "
+
+bind-key "s" display-popup -E -w 40% "sesh connect \"$(
+	sesh list -i | gum filter --limit 1 --placeholder 'Pick a sesh' --height 50 --prompt='?'
+)\""
+bind-key "v" new-window "nvim -c 'Telescope find_files'"

@@ -1,0 +1,7 @@
+[[session]]
+name = "Dotfiles"
+path = "~/.dotfiles"
+
+[[session]]
+name = "Obsidian"
+path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/SecondBrain"

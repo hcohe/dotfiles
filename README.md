@@ -1,7 +1,3 @@
-
-
-**Podman**:
-
-podman machine init
-podman machine start
-
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew bundle --file brew/Brewfile
+stow -A
